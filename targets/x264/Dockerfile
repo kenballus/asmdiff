@@ -6,26 +6,26 @@ RUN apt -y update && apt -y upgrade && apt -y install gcc-13 git nasm python3 gc
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
 
-RUN git clone 'git clone https://code.videolan.org/videolan/x264.git'
+RUN git clone 'https://code.videolan.org/videolan/x264.git'
 
 # nal_escape_c.c
 RUN cat x264/common/bitstream.c | python3 -c 'import sys, re; inp = sys.stdin.buffer.read(); m = re.search(rb"uint8_t \*nal_escape_c\(.*\)(?:.*\n[^}])*.*\n}", inp); print("#include <stdint.h>"); print(); print(m[0].decode("latin1"))' > nal_escape_c.c
 
 # bitstream_x86.o
-RUN nasm -f elf64 -I./x64/common/x86 -DARCH_X86_64=1 -o bitstream_x86.o x264/common/x86/bitstream-a.asm
+RUN nasm -f elf64 -I./x264/common/x86 -DARCH_X86_64=1 -o bitstream_x86.o x264/common/x86/bitstream-a.asm
 
 COPY harness.c .
 
 # harness_x86_c
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o harness_x86_c
+RUN x86_64-linux-gnu-gcc-13 -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o harness_x86_c
 
 # harness_x86_mmx2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_mmx2 bitstream.o harness.c -o harness_x86_mmx2
+RUN x86_64-linux-gnu-gcc-13 -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_mmx2 bitstream_x86.o harness.c -o harness_x86_mmx2
 
 # harness_x86_sse2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_sse2 bitstream.o harness.c -o harness_x86_sse2
+RUN x86_64-linux-gnu-gcc-13 -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_sse2 bitstream_x86.o harness.c -o harness_x86_sse2
 
 # harness_x86_avx2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_avx2 bitstream.o harness.c -o harness_x86_avx2
+RUN x86_64-linux-gnu-gcc-13 -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_avx2 bitstream_x86.o harness.c -o harness_x86_avx2
 
 
