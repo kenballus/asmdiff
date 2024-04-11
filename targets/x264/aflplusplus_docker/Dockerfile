@@ -20,3 +20,8 @@ ARG CPU_TARGET
 RUN cd AFLplusplus/qemu_mode && ./build_qemu_support.sh
 
 RUN cd AFLplusplus && make install
+
+ARG TARGET
+COPY $TARGET . 
+
+CMD sleep infinity
