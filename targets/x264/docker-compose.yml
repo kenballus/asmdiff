@@ -3,55 +3,55 @@ services:
     build:
       context: "./aflplusplus_docker"
       args:
-        TARGET: "./targets/harness_x86_c"
+        HARNESS: "./targets/harness_x86_c"
   x86_mmx2:
     build:
       context: "./aflplusplus_docker"
       args:
-        TARGET: "./targets/harness_x86_mmx2"
+        HARNESS: "./targets/harness_x86_mmx2"
   x86_sse2:
     build:
       context: "./aflplusplus_docker"
       args:
-        TARGET: "./targets/harness_x86_sse2"
+        HARNESS: "./targets/harness_x86_sse2"
   x86_avx2:
     build:
       context: "./aflplusplus_docker"
       args:
-        TARGET: "./targets/harness_x86_avx2"
+        HARNESS: "./targets/harness_x86_avx2"
   aarch64_c:
     build:
       context: "./aflplusplus_docker"
       args:
         CPU_TARGET: "aarch64"
-        TARGET: "./targets/harness_aarch64_c"
+        HARNESS: "./targets/harness_aarch64_c"
   aarch64_neon:
     build:
       context: "./aflplusplus_docker"
       args:
         CPU_TARGET: "aarch64"
-        TARGET: "./targets/harness_aarch64_neon"
+        HARNESS: "./targets/harness_aarch64_neon"
   mips64_c:
     build:
       context: "./aflplusplus_docker"
       args:
         CPU_TARGET: "mips64"
-        TARGET: "./targets/harness_mips64_c"
+        HARNESS: "./targets/harness_mips64_c"
   ppc64_c:
     build:
       context: "./aflplusplus_docker"
       args:
         CPU_TARGET: "ppc64"
-        TARGET: "./targets/harness_ppc64_c"
+        HARNESS: "./targets/harness_ppc64_c"
   arm_c:
     build:
       context: "./aflplusplus_docker"
       args:
         CPU_TARGET: "arm"
-        TARGET: "./targets/harness_arm_c"
+        HARNESS: "./targets/harness_arm_c"
   arm_neon:
     build:
       context: "./aflplusplus_docker"
       args:
-        CPU_TARGET: "aarch64"
-        TARGET: "./targets/harness_arm_neon"
+        CPU_TARGET: "arm"
+        HARNESS: "./targets/harness_arm_neon"

@@ -10,15 +10,15 @@ RUN git clone 'https://code.videolan.org/videolan/x264.git'
 RUN cat x264/common/bitstream.c | python3 -c 'import sys, re; inp = sys.stdin.buffer.read(); m = re.search(rb"uint8_t \*nal_escape_c\(.*\)(?:.*\n[^}])*.*\n}", inp); print("#include <stdint.h>"); print(); print(m[0].decode("latin1"))' > nal_escape_c.c
 
 # bitstream_x86.o
-RUN cd x264 && ./configure 
+RUN cd x264 && ./configure
 RUN nasm -f elf64 -I./x264/common/x86 -DARCH_X86_64=1 -o bitstream_x86.o x264/common/x86/bitstream-a.asm
 
 # bitstream_aarch64.o
-RUN cd x264 && ./configure --host=aarch64-linux-gnu --cross-prefix=aarch64-linux-gnu- 
+RUN cd x264 && ./configure --host=aarch64-linux-gnu --cross-prefix=aarch64-linux-gnu-
 RUN aarch64-linux-gnu-gcc -c x264/common/aarch64/bitstream-a.S -I./x264 -o bitstream_aarch64.o
 
 # bitstream_arm.o
-RUN cd x264 && ./configure --host=arm-linux-gnueabi --cross-prefix=arm-linux-gnueabi- 
+RUN cd x264 && ./configure --host=arm-linux-gnueabi --cross-prefix=arm-linux-gnueabi-
 RUN arm-linux-gnueabi-gcc -c x264/common/arm/bitstream-a.S -I./x264 -o bitstream_arm.o
 
 COPY harness.c .
@@ -36,7 +36,7 @@ RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion 
 RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_avx2 bitstream_x86.o harness.c -o ./targets/harness_x86_avx2
 
 # harness_aarch64_c
-RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/arness_aarch64_c
+RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_aarch64_c
 
 # harness_aarch64_neon
 RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_neon bitstream_aarch64.o harness.c -o ./targets/harness_aarch64_neon
