@@ -22,33 +22,33 @@ RUN cd x264 && ./configure --host=arm-linux-gnueabi --cross-prefix=arm-linux-gnu
 RUN arm-linux-gnueabi-gcc -c x264/common/arm/bitstream-a.S -I./x264 -o bitstream_arm.o
 
 COPY harness.c .
-RUN mkdir targets
+RUN mkdir harnesses
 # harness_x86_c
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_x86_c
+RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./harnesses/harness_x86_c
 
 # harness_x86_mmx2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_mmx2 bitstream_x86.o harness.c -o ./targets/harness_x86_mmx2
+RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_mmx2 bitstream_x86.o harness.c -o ./harnesses/harness_x86_mmx2
 
 # harness_x86_sse2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_sse2 bitstream_x86.o harness.c -o ./targets/harness_x86_sse2
+RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_sse2 bitstream_x86.o harness.c -o ./harnesses/harness_x86_sse2
 
 # harness_x86_avx2
-RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_avx2 bitstream_x86.o harness.c -o ./targets/harness_x86_avx2
+RUN x86_64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_avx2 bitstream_x86.o harness.c -o ./harnesses/harness_x86_avx2
 
 # harness_aarch64_c
-RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_aarch64_c
+RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./harnesses/harness_aarch64_c
 
 # harness_aarch64_neon
-RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_neon bitstream_aarch64.o harness.c -o ./targets/harness_aarch64_neon
+RUN aarch64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_neon bitstream_aarch64.o harness.c -o ./harnesses/harness_aarch64_neon
 
 # harness_ppc64_c
-RUN powerpc64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_ppc64_c
+RUN powerpc64-linux-gnu-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./harnesses/harness_ppc64_c
 
 # harness_mips64_c
-RUN mips64-linux-gnuabi64-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_mips64_c
+RUN mips64-linux-gnuabi64-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./harnesses/harness_mips64_c
 
 # harness_arm_c
-RUN arm-linux-gnueabi-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./targets/harness_arm_c
+RUN arm-linux-gnueabi-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=nal_escape_c nal_escape_c.c harness.c -o ./harnesses/harness_arm_c
 
 # harness_arm_neon
-RUN arm-linux-gnueabi-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_neon bitstream_arm.o harness.c -o ./targets/harness_arm_neon
+RUN arm-linux-gnueabi-gcc -Wno-implicit-function-declaration -Wno-int-conversion -static -Dnal_escape=x264_nal_escape_neon bitstream_arm.o harness.c -o ./harnesses/harness_arm_neon
