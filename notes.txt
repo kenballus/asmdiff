@@ -1,0 +1,8 @@
+ffmpeg
+x264
+x265
+libaom
+libvpx
+libwebp
+
+https://packages.gentoo.org/packages/dev-lang/nasm/reverse-dependencies
